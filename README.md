@@ -6,7 +6,7 @@ Environment
 - Eclipse IDE 2022-03 (4.23) for Enterprise Java and Web Developers for Windows x86_64  
   
 Add .gitignore file to each Java Project.  
-github / gitignore / Global / Eclipse.gitignore  
+- github / gitignore / Global / Eclipse.gitignore  
 [https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore](https://github.com/github/gitignore/blob/master/Global/Eclipse.gitignore)  
   
 Project list  
