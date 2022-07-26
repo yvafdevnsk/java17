@@ -1,5 +1,11 @@
 # Java17 サンプルコード
 
-プロジェクト  
-  
-1. [StringBuilder#substring.](https://github.com/yvafdevnsk/java17/tree/main/java17-stringbuilder-substring)  
+## StringBuilderSubstring
+StringBuilderから部分文字列を取得する。
+```
+StringBuilder builder = new StringBuilder();
+builder.append("0123456789");
+
+// インデックス3以上8未満 => "34567"
+System.out.println(builder.substring(3, 8));
+```
