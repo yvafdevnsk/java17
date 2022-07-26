@@ -1,6 +1,6 @@
 # Java17 サンプルコード
 
-## StringBuilderSubstring
+## java17-stringbuilder-substring
 StringBuilderから部分文字列を取得する。
 ```
 StringBuilder builder = new StringBuilder();
