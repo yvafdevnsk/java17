@@ -1,0 +1,191 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>amnesia</groupId>
+    <artifactId>Java17Log4j</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>Java17(LTS) Log4j</name>
+    <description>Java17(LTS) Log4j 2.24.3</description>
+    <!-- プロパティの定義 -->
+    <properties>
+        <!-- プロジェクトのディレクトリを定義する。 -->
+        <project.basedir>/home/mizuki/eclipse-workspace/Java17Log4j</project.basedir>
+        <!-- 入力ファイルのエンコーディングを定義する。 -->
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 出力ファイルのエンコーディングを定義する。 -->
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- コンパイラの出力ターゲット(javacのreleaseオプション)となるJavaのバージョンを指定する。 -->
+        <maven.compiler.release>17</maven.compiler.release>
+    </properties>
+    <!-- 依存関係の定義 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- ログ出力に使用するLog4jのバージョンを一括指定する。 -->
+            <!-- Log4j BOM (Bill-of-Materials) -->
+            <!-- https://logging.apache.org/log4j/2.x/manual/getting-started.html#prerequisites -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>2.24.3</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <!-- 依存ライブラリの定義 -->
+    <dependencies>
+        <!-- Logging API (Log4j API) -->
+        <!-- https://logging.apache.org/log4j/2.x/manual/getting-started.html#using-api -->
+        <!-- バージョンはdependencyManagementで指定しているのでここには記述しない。 -->
+        <!-- コンパイル時に参照する。 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <!-- Logging implementation (Log4j Core) -->
+        <!-- https://logging.apache.org/log4j/2.x/manual/getting-started.html#install-app -->
+        <!-- 実行時に参照する。 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Log4j JSON-encoding support -->
+        <!-- https://logging.apache.org/log4j/2.x/manual/getting-started.html#install-app -->
+        <!-- 実行時に参照する。 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-layout-template-json</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+    </dependencies>
+    <!-- ビルドの定義 -->
+    <build>
+        <plugins>
+            <!-- コンパイル -->
+            <!-- https://maven.apache.org/plugins/maven-compiler-plugin/usage.html -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.14.0</version>
+                <configuration>
+                    <!-- ソースコードのディレクトリを指定する。 -->
+                    <!-- https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#compileSourceRoots -->
+                    <compileSourceRoots>
+                        <compileSourceRoot>${project.basedir}/src/main/java</compileSourceRoot>
+                    </compileSourceRoots>
+                    <!-- クラスファイルを出力するディレクトリを指定する。 -->
+                    <!-- https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html#outputDirectory -->
+                    <outputDirectory>${project.basedir}/target/classes</outputDirectory>
+                </configuration>
+            </plugin>
+            <!-- JARファイルの作成 -->
+            <!-- https://maven.apache.org/plugins/maven-compiler-plugin/usage.html -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.4.2</version>
+                <configuration>
+                    <!-- JARファイルに入れるクラスファイルのディレクトリを指定する。 -->
+                    <!-- https://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html#classesDirectory -->
+                    <classesDirectory>${project.basedir}/target/classes</classesDirectory>
+                    <!-- JARファイルに入れるファイルを指定する。 -->
+                    <!-- https://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html#includes -->
+                    <!-- "**"は任意のディレクトリ、"*"は任意のファイル -->
+                    <!-- ${project.basedir}/target/classesに${project.basedir}/src/main/resources配下のファイルがコピーされるので必要なものだけJARファイルに入れる。 -->
+                    <includes>
+                        <include>module-info.class</include>
+                        <include>amnesia/**/*.class</include>
+                    </includes>
+                    <!-- JARファイルにpom.xmlを入れない。 -->
+                    <archive>
+                        <addMavenDescriptor>false</addMavenDescriptor>
+                    </archive>
+                    <!-- JARファイルを出力するディレクトリを指定する。 -->
+                    <!-- https://maven.apache.org/plugins/maven-jar-plugin/jar-mojo.html#outputDirectory -->
+                    <outputDirectory>${project.basedir}/target/release/lib</outputDirectory>
+                </configuration>
+            </plugin>
+            <!-- リソースファイルのコピー -->
+            <!-- https://maven.apache.org/plugins/maven-resources-plugin/index.html -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-resources-shell</id>
+                        <!-- Introduction to the Build Lifecycle -->
+                        <!-- https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!-- リソースファイルを出力するディレクトリを指定する。 -->
+                            <!-- https://maven.apache.org/plugins/maven-resources-plugin/resources-mojo.html#outputDirectory -->
+                            <outputDirectory>${project.basedir}/target/release/bin</outputDirectory>
+                            <!-- コピーするリソースを指定する。 -->
+                            <!-- https://maven.apache.org/plugins/maven-resources-plugin/examples/include-exclude.html -->
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources/bin</directory>
+                                    <includes>
+                                        <include>Java17Log4j.sh</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-resources-log</id>
+                        <!-- Introduction to the Build Lifecycle -->
+                        <!-- https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html -->
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!-- リソースファイルを出力するディレクトリを指定する。 -->
+                            <!-- https://maven.apache.org/plugins/maven-resources-plugin/resources-mojo.html#outputDirectory -->
+                            <outputDirectory>${project.basedir}/target/release/resource</outputDirectory>
+                            <!-- コピーするリソースを指定する。 -->
+                            <!-- https://maven.apache.org/plugins/maven-resources-plugin/examples/include-exclude.html -->
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources</directory>
+                                    <includes>
+                                        <include>json-template-layout-log4j2.json</include>
+                                        <include>log4j2.xml</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- 依存ライブラリのコピー -->
+            <!-- https://maven.apache.org/components/plugins/maven-dependency-plugin/examples/copying-project-dependencies.html -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.8.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <!-- Introduction to the Build Lifecycle -->
+                        <!-- https://maven.apache.org/guides/introduction/introduction-to-the-lifecycle.html -->
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- 依存ライブラリを出力するディレクトリを指定する。 -->
+                            <!-- https://maven.apache.org/components/plugins/maven-dependency-plugin/copy-dependencies-mojo.html#outputDirectory -->
+                            <outputDirectory>${project.basedir}/target/release/lib</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

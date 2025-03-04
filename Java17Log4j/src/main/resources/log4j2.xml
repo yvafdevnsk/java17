@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration xmlns="https://logging.apache.org/xml/ns"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="
+                   https://logging.apache.org/xml/ns
+                   https://logging.apache.org/xml/ns/log4j-config-2.xsd">
+<!-- 出力先の定義 -->
+<Appenders>
+  <!-- コンソール出力 -->
+  <!-- エンコーディングをUTF-8にする。EclipseのXMLエディタ上ではエラーになるが動作する。 -->
+  <!-- エンコーディングのデフォルト値はプラットフォームのデフォルトになっている。 -->
+  <!-- https://logging.apache.org/log4j/2.x/manual/pattern-layout.html#plugin-attr-charset -->
+  <Console name="CONSOLE">
+    <PatternLayout pattern="%p - %m%n" charset="UTF-8"/>
+  </Console>
+  <!-- ファイル出力 -->
+  <File name="MAIN" fileName="/home/mizuki/eclipse-workspace/Java17Log4j/target/release/log/main.log">
+    <!-- JSON Template Layoutのエンコーディングのデフォルト値はUTF-8になっている。 -->
+    <!-- https://logging.apache.org/log4j/2.x/manual/json-template-layout.html#plugin-attr-charset -->
+    <!-- 設定ファイルはクラスパスに配置してeventTemplateUri属性で指定する。 -->
+    <!-- 設定ファイルはサンプルを部分的に置き換えるのが簡単で良い。 -->
+    <!-- https://logging.apache.org/log4j/2.x/manual/json-template-layout.html#event-templates -->
+    <!--   EcsLayout.json -->
+    <!-- 設定ファイルのタイムスタンプのタイムゾーンをUTCから日本(Asia/Tokyo)にする。 -->
+    <!-- https://logging.apache.org/log4j/2.x/manual/json-template-layout.html#event-template-resolver-timestamp -->
+    <JsonTemplateLayout eventTemplateUri="classpath:json-template-layout-log4j2.json"/>
+  </File>
+  <!-- ファイル出力 -->
+  <!-- エンコーディングをUTF-8にする。EclipseのXMLエディタ上ではエラーになるが動作する。 -->
+  <!-- エンコーディングのデフォルト値はプラットフォームのデフォルトになっている。 -->
+  <!-- https://logging.apache.org/log4j/2.x/manual/pattern-layout.html#plugin-attr-charset -->
+  <File name="DEBUG_LOG" fileName="/home/mizuki/eclipse-workspace/Java17Log4j/target/release/log/debug.log">
+    <PatternLayout pattern="%d [%t] %p %c - %m%n" charset="UTF-8"/>
+  </File>
+</Appenders>
+<!-- ログの定義 -->
+<!--   ログのレベル -->
+<!--   https://logging.apache.org/log4j/2.x/javadoc/log4j-api/org/apache/logging/log4j/Level.html -->
+<!--     [低] ALL, TRACE, DEBUG, INFO, WARN, ERROR, FATAL [高] -->
+<!--   デフォルトのログのレベルはERROR -->
+<!--   https://logging.apache.org/log4j/2.x/manual/systemproperties.html#log4j2.level -->
+<Loggers>
+  <!-- DEBUG以上のレベルを受け入れる。 -->
+  <Root level="DEBUG">
+    <!-- WARN以上のレベルをコンソールに出力する。 -->
+    <AppenderRef ref="CONSOLE" level="WARN"/>
+    <!-- INFO以上のレベルをMAINファイルに出力する。 -->
+    <AppenderRef ref="MAIN" level="INFO"/>
+    <!-- DEBUG以上のレベルをDEBUG_LOGファイルに出力する。 -->
+    <AppenderRef ref="DEBUG_LOG" level="DEBUG"/>
+  </Root>
+</Loggers>
+</Configuration>
