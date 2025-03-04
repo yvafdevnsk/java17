@@ -25,3 +25,28 @@ catch(IOException e) {
     System.err.println(e);
 }
 ```
+
+## Java17Log4j
+
+Java17(LTS)でApache Log4j 2.24.3を使う。
+
+- [Javaプロジェクト](https://github.com/yvafdevnsk/java17/tree/main/Java17Log4j)
+- [ドキュメント](https://github.com/yvafdevnsk/java17/blob/main/java17-apache-log4j-2.24.3.md)
+
+```
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class Main {
+    private static final Logger LOGGER = LogManager.getLogger();
+
+    public static void main(String[] args) {
+        LOGGER.fatal("ログメッセージ `{}`", "fatal");
+        LOGGER.error("ログメッセージ `{}`", "error");
+        LOGGER.warn("ログメッセージ `{}`", "warn");
+        LOGGER.info("ログメッセージ `{}`", "info");
+        LOGGER.debug("ログメッセージ `{}`", "debug");
+        LOGGER.trace("ログメッセージ `{}`", "trace");
+    }
+}
+```
