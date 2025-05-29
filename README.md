@@ -26,6 +26,18 @@ catch(IOException e) {
 }
 ```
 
+## java17-split-list
+リストを指定された件数ごとに分割する。
+```
+List<String> srcList = new ArrayList<>(Arrays.asList(new String[10500]));
+int count = 2000;
+
+List<List<String>> splitList = Util.splitList(srcList, count);
+for (int i = 0; i < splitList.size(); i++) {
+    System.out.println(String.format("分割リスト[%d]=[%d]件", i, splitList.get(i).size()));
+}
+```
+
 ## Java17Log4j
 
 Java17(LTS)でApache Log4j 2.24.3を使う。
