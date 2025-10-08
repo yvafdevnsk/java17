@@ -38,8 +38,19 @@ for (int i = 0; i < splitList.size(); i++) {
 }
 ```
 
-## Java17Log4j
+## java17-sub-list
+リストから部分リストを取得する。
+```
+List<Integer> srcList = new ArrayList<>();
+IntStream.rangeClosed(1, 10).forEach(i -> srcList.add(i));
+List<Integer> subList = Util.subList(srcList, 3, 6);
 
+System.out.println("srcList=1,2,3,4,5,6,7,8,9,10");
+System.out.println("subList=4,5,6");
+System.out.println(subList.stream().map(String::valueOf).collect(Collectors.joining(",")));
+```
+
+## Java17Log4j
 Java17(LTS)でApache Log4j 2.24.3を使う。
 
 - [Javaプロジェクト](https://github.com/yvafdevnsk/java17/tree/main/Java17Log4j)
